@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>crud sederhana js</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 600px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        margin: 20px;
+      }
+
+      h2 {
+        text-align: center;
+        color: #2c3e50;
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: 600;
+      }
+
+      .form-group {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      input {
+        flex: 1;
+        padding: 14px 18px;
+        border: 2px solid #e0e6ed;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+      }
+
+      input:focus {
+        outline: none;
+        border-color: #3498db;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+      }
+
+      button {
+        padding: 14px 20px;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        min-width: 100px;
+      }
+
+      .btn-simpan {
+        background: #3498db;
+        color: white;
+      }
+
+      .btn-simpan:hover {
+        background: #2980b9;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(52, 152, 219, 0.3);
+      }
+
+      ul {
+        list-style-type: none;
+      }
+
+      li {
+        background: #f8fafc;
+        padding: 16px 20px;
+        margin: 12px 0;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      li:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      .data-item {
+        font-size: 16px;
+        color: #2d3748;
+        font-weight: 500;
+      }
+
+      .action-buttons {
+        display: flex;
+        gap: 8px;
+      }
+
+      .btn-edit {
+        background: #f39c12;
+        color: white;
+      }
+
+      .btn-hapus {
+        background: #e74c3c;
+        color: white;
+      }
+
+      .btn-edit:hover {
+        background: #e67e22;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(243, 156, 18, 0.3);
+      }
+
+      .btn-hapus:hover {
+        background: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+      }
+
+      @media (max-width: 600px) {
+        .form-group {
+          flex-direction: column;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+        }
+
+        button {
+          min-width: auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>CRUD Data Siswa</h2>
+
+      <div class="form-group">
+        <input type="text" id="nama" placeholder="Masukkan nama siswa..." />
+        <button class="btn-simpan" onclick="tambahData()">Simpan</button>
+      </div>
+
+      <ul id="list"></ul>
+    </div>
+
+    <script>
+      let data = [];
+      let editIndex = null;
+
+      function tambahData() {
+        const input = document.getElementById("nama");
+        const nama = input.value.trim();
+
+        if (nama === "") {
+          alert("Nama tidak boleh kosong");
+          return;
+        }
+        if (editIndex === null) {
+          // CREATE
+          data.push(nama);
+        } else {
+          // UPDATE
+          data[editIndex] = nama;
+          editIndex = null;
+        }
+
+        input.value = "";
+        renderData();
+      }
+
+      function renderData() {
+        const list = document.getElementById("list");
+        list.innerHTML = "";
+
+        data.forEach((item, index) => {
+          list.innerHTML += `
+          <li>
+            <span class="data-item">${item}</span>
+            <div class="action-buttons">
+              <button class="btn-edit" onclick="editData(${index})">Edit</button>
+              <button class="btn-hapus" onclick="hapusData(${index})">Hapus</button>
+            </div>
+          </li>
+        `;
+        });
+      }
+      function editData(index) {
+        document.getElementById("nama").value = data[index];
+        editIndex = index;
+      }
+
+      function hapusData(index) {
+        data.splice(index, 1);
+        renderData();
+      }
+    </script>
+  </body>
+</html>
